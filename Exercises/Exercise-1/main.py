@@ -24,6 +24,7 @@ def fetchuri(uri):
     """Fetching the zip files"""
     response = requests.get(uri)
     response.raise_for_status()
+
     """Saving it into the memory, not downloading it"""
     zip_bytes = io.BytesIO(response.content)
     extract_csv(zip_bytes)
