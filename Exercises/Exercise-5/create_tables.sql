@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS accounts (customer_id INTEGER,  first_name VARCHAR(100),  last_name VARCHAR(100),  address_1 VARCHAR(100),  address_2 VARCHAR(100),  city VARCHAR(100),  state VARCHAR(100),  zip_code INTEGER,  join_date VARCHAR(100));
+CREATE TABLE IF NOT EXISTS products (product_id INTEGER,  product_code INTEGER,  product_description VARCHAR(100));
+CREATE TABLE IF NOT EXISTS transactions (transaction_id VARCHAR(100),  transaction_date VARCHAR(100),  product_id INTEGER,  product_code INTEGER,  product_description VARCHAR(100),  quantity INTEGER,  account_id INTEGER);
+ALTER TABLE accounts ADD PRIMARY KEY (customer_id);
+ALTER TABLE products ADD PRIMARY KEY (product_id);
+ALTER TABLE transactions ADD PRIMARY KEY (transaction_id);
+ALTER TABLE transactions ADD FOREIGN KEY (account_id) REFERENCES accounts(customer_id);
+ALTER TABLE transactions ADD FOREIGN KEY (product_id) REFERENCES products(product_id);
+CREATE INDEX first_name_idx ON accounts(first_name);
+CREATE INDEX product_code_idx ON products(product_code);
