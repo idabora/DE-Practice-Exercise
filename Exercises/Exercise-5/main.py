@@ -37,7 +37,7 @@ def insert_data(cur, conn):
 
 
 def main():
-    host = "localhost"
+    host = "postgres"
     database = "postgres"
     user = "postgres"
     pas = "postgres"
@@ -75,8 +75,8 @@ def main():
         f.write("ALTER TABLE transactions ADD FOREIGN KEY (product_id) REFERENCES products(product_id);\n")
 
         # 4. Create indexes
-        f.write("CREATE INDEX first_name_idx ON accounts(first_name);\n")
-        f.write("CREATE INDEX product_code_idx ON products(product_code);\n")
+        f.write("CREATE INDEX IF NOT EXISTS first_name_idx ON accounts(first_name);\n")
+        f.write("CREATE INDEX IF NOT EXISTS product_code_idx ON products(product_code);\n")
 
     create_table(cur, conn, sql_file_path)
     insert_data(cur, conn)

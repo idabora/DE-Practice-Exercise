@@ -6,5 +6,5 @@ ALTER TABLE products ADD PRIMARY KEY (product_id);
 ALTER TABLE transactions ADD PRIMARY KEY (transaction_id);
 ALTER TABLE transactions ADD FOREIGN KEY (account_id) REFERENCES accounts(customer_id);
 ALTER TABLE transactions ADD FOREIGN KEY (product_id) REFERENCES products(product_id);
-CREATE INDEX first_name_idx ON accounts(first_name);
-CREATE INDEX product_code_idx ON products(product_code);
+CREATE INDEX IF NOT EXISTS first_name_idx ON accounts(first_name);
+CREATE INDEX IF NOT EXISTS product_code_idx ON products(product_code);

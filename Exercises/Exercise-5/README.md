@@ -39,3 +39,10 @@ Generally, your script should do the following ...
 3. Use `psycopg2` to connect to `Postgres` on `localhost` and the default `port`.
 4. Create the tables against the database.
 5. Ingest the `csv` files into the tables you created, also using `psycopg2`.
+
+
+# ls -ld postgres-data
+# sudo chown -R $USER:$USER postgres-data
+# chmod -R u+rwX postgres-data
+# docker exec -it exercise-5-postgres-1 bash
+
