@@ -1,2 +1,4 @@
 pytest
 duckdb
+numpy
+pandas

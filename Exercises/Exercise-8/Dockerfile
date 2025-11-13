@@ -1,10 +1,14 @@
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 RUN apt-get update && \
-    apt-get install -y vim software-properties-common python3.8 python3-pip libpq-dev build-essential libssl-dev libffi-dev python3-dev && \
+    apt-get install -y python3 python3-pip python3-dev build-essential cmake libssl-dev libffi-dev libpq-dev && \
     apt-get clean
 
-WORKDIR app
-COPY . /app
+WORKDIR /app
 
-RUN pip3 install -r requirements.txt
+COPY requirements.txt /app/
+
+RUN python3 -m pip install --upgrade pip setuptools wheel && \
+    pip3 install --no-cache-dir -r requirements.txt
+
+COPY . /app
