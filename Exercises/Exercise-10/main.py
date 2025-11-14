@@ -1,16 +1,14 @@
+import great_expectations as ge
+from great_expectations.dataset import SparkDFDataset
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import (
-    col,
-    to_timestamp,
-    unix_timestamp,
-    sum as _sum,
-    date_format,
-)
+from pyspark.sql.functions import col, date_format, to_timestamp, unix_timestamp
+from pyspark.sql.functions import sum as _sum
 from pyspark.sql.types import (
-    StructType,
-    StructField,
-    StringType,
+    DateType,
     DoubleType,
+    StringType,
+    StructField,
+    StructType,
     TimestampType,
 )
 
@@ -21,8 +19,8 @@ spark = SparkSession.builder.appName("BikeRideDuration").getOrCreate()
 schema = StructType([
     StructField("ride_id", StringType(), True),
     StructField("rideable_type", StringType(), True),
-    StructField("started_at", StringType(), True),
-    StructField("ended_at", StringType(), True),
+    StructField("started_at", TimestampType(), True),
+    StructField("ended_at", TimestampType(), True),
     StructField("start_station_name", StringType(), True),
     StructField("start_station_id", StringType(), True),
     StructField("end_station_name", StringType(), True),
@@ -62,7 +60,17 @@ daily_durations = df.groupBy("date").agg(
     _sum("duration_seconds").alias("total_duration_seconds")
 )
 
-output_parquet_path = "results/output_file.parquet"
-daily_durations.write.mode("overwrite").parquet(output_parquet_path)
+ge_df = SparkDFDataset(daily_durations)
+ge_df.expect_column_values_not_to_be_null("started_at")
+ge_df.expect_column_values_not_to_be_null("ended_at")
+ge_df.expect_column_values_to_be_between("duration_seconds",min_value=1,max_value=86400)
+
+# validation = ge_df.validate()
+
+if not ge_df.validate()["success"]:
+    raise Exception("Data quality failed!")
+
+output_parquet_path = "results/output_file.csv"
+daily_durations.write.mode("overwrite").csv(output_parquet_path)
 
 
