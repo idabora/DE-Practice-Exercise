@@ -18,7 +18,7 @@ is where your `Polars` code to complete the exercise should go.
 
 #### Problems Statement
 There is a folder called `data` in this current directory, `Exercises/Exercise-9`. Inside this
-folder there is a `csv` file. The file is called `202306-divvy-tripdate.csv`. This is an open source
+folder there is a `csv` file. The file is called `202306-divvy-tripdata.csv`. This is an open source
 data set bike trips.
 
 Generally the files look like this ...

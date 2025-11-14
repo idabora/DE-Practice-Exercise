@@ -1,10 +1,22 @@
-FROM ubuntu:18.04
+# FROM ubuntu:18.04
 
-RUN apt-get update && \
-    apt-get install -y vim software-properties-common python3.8 python3-pip libpq-dev build-essential libssl-dev libffi-dev python3-dev && \
-    apt-get clean
+# RUN apt-get update && \
+#     apt-get install -y vim software-properties-common python3.8 python3-pip libpq-dev build-essential libssl-dev libffi-dev python3-dev && \
+#     apt-get clean
 
-WORKDIR app
-COPY . /app
+# WORKDIR app
+# COPY . /app
 
-RUN pip3 install -r requirements.txt
+# RUN python3 -m pip install --upgrade pip setuptools wheel && pip3 install --no-cache-dir -r requirements.txt
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install --upgrade pip setuptools wheel
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD ["python", "main.py"]
